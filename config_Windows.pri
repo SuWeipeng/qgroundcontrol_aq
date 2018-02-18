@@ -43,6 +43,16 @@ win32-msvc* {
 	} else {
 		CONFIG += qaxcontainer
 	}
+
+        QMAKE_CXXFLAGS_RELEASE -= -Zc:strictStrings
+        QMAKE_CFLAGS_RELEASE -= -Zc:strictStrings
+        QMAKE_CFLAGS -= -Zc:strictStrings
+        QMAKE_CXXFLAGS -= -Zc:strictStrings
+
+        DESTDIR_WIN = $$replace(DESTDIR, "/", "\\")
+        QT_BIN_DIR  = $$dirname(QMAKE_QMAKE)
+        DEPLOY_TARGET = $$shell_quote($$shell_path($$DESTDIR\\$${TARGET}.exe))
+        QMAKE_POST_LINK += $$escape_expand(\\n) $$QT_BIN_DIR\\windeployqt --no-compiler-runtime $${DEPLOY_TARGET}
 } # end win32-msvc-*
 
 win32-g++ {  # MinGW
